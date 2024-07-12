@@ -64,7 +64,7 @@ app.get('/fetchDealers', async (req, res) => {
     const documents = await Dealerships.find();
     res.json(documents);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching dealerships' });
+    res.status(500).json({ error: JSON.stringify(error) });
   }
 });
 
