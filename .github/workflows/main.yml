@@ -1,0 +1,31 @@
+#include <iostream>
+
+class Base {
+private:
+    virtual void privateVirtualFunction() {
+        std::cout << "Base's private virtual function" << std::endl;
+    }
+
+public:
+    // Public function that indirectly calls private virtual function
+    void callPrivateVirtualFunction() {
+        privateVirtualFunction();
+    }
+};
+
+class Derived : public Base {
+public:
+    // Attempt to make private virtual function public
+    void privateVirtualFunction() override {
+        std::cout << "Derived's public override of private virtual function" << std::endl;
+    }
+};
+
+int main() {
+    Derived derivedObj;
+    derivedObj.callPrivateVirtualFunction(); // This will call Base's privateVirtualFunction
+
+    // Attempt to call the derived's version directly
+    // derivedObj.privateVirtualFunction(); // This will cause a compilation error
+    return 0;
+}
