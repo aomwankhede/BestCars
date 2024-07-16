@@ -10,6 +10,11 @@ services:
     restart: always
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.adminCommand(\"ping\")'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Node api service
   api:
@@ -17,7 +22,10 @@ services:
     ports:
       - 3030:3030
     depends_on: 
-      - mongo_db
+      mongo_db:
+        condition: service_healthy
+    environment:
+      - MONGO_URL=mongodb://localhost:27017/dealershipsDB
 
 volumes:
   mongo_data: {}
